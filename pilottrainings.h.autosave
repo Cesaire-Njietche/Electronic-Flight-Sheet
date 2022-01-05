@@ -1,0 +1,30 @@
+#ifndef PILOTTRAININGS_H
+#define PILOTTRAININGS_H
+
+#include <QObject>
+#include <QSqlRelationalTableModel>
+
+class PilotTrainings : public QSqlRelationalTableModel
+{
+    Q_OBJECT
+public:
+    explicit PilotTrainings(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
+    
+    enum{
+        IDPilotROLE = Qt::UserRole + 1,
+        IDTrainingRole,
+        DateRole
+    };
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    // Editable:
+    bool setData(const QModelIndex &index, const QVariant &value,
+                 int role = Qt::EditRole) override;
+
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    virtual QHash<int, QByteArray> roleNames() const override;
+public slots:
+    bool addRecord(int idP, int idT, QDate date);    
+};
+
+#endif // PILOTTRAININGS_H
